@@ -1,0 +1,18 @@
+﻿@model IEnumerable<WebApplication2.Models.UserRead>
+
+<p>twoje ostatnio przecztane newsy: </p>
+@foreach(var news in Model)
+{	
+	if(news== null)
+	{
+		<p>nie czytales jeszcze nic</p>
+	}
+	
+	@using (Html.BeginForm("choosenews", "Home", FormMethod.Post))
+	{
+		@Html.ValidationSummary();
+		@Html.Hidden("newsId", news.News.Id);
+		<p>@news.News.Title<button type="submit" name="selectedNewsId" value="@news.News.Id">przejdz do newsa</button></p>
+	}
+	
+}

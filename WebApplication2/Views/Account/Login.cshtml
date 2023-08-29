@@ -1,0 +1,63 @@
+﻿@model WebApplication2.Models.Login
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body{
+            background-color: #37474F;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 50vh;
+            margin: 0;
+            overflow: visible;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        .button{
+            padding:10px 20px;
+            background-color: #263238;
+            color:white;
+            border: none;
+            cursor: pointer;
+        }
+        .textarealogin
+        {
+            background-color: #37474F;
+            padding: 5px 10px;
+            color:white
+        }
+
+        input[type="text"], input[type="password"] {
+            background-color: #263238;
+            border:none;
+            padding:5px;
+        }
+
+        .nav-link {
+            text-decoration:none;
+            color:white;
+            text-size:10px;
+        }
+	</style>
+    </head>
+    <body>
+    <p ><a class="nav-link" asp-controller="Home" asp-action="index">Strona Glowna</a> </p>
+<h1>logowanie</h1>
+<div class="logincontainer">
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+	@Html.ValidationSummary()
+            <span class="textarealogin">Login:  @Html.TextBoxFor(x => x.Username) </span>
+            <span class="textarealogin">Haslo:  @Html.PasswordFor(x => x.Password) </span>
+	<button class="button"type="submit">zaloguj</button>
+}
+</div>
+    </body>
+</html>

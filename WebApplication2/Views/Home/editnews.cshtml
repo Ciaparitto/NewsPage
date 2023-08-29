@@ -1,0 +1,118 @@
+﻿@model WebApplication2.Models.News
+@{
+	ViewData["Title"] = "EditNews";
+	List<Image> Images2 = new List<Image>();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #37474F;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 50vh;
+            margin: 0;
+            overflow: visible;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #263238;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .textarealogin {
+            background-color: #37474F;
+            padding: 5px 10px;
+            color: white
+        }
+
+        input[type="text"], input[type="password"] {
+            background-color: #263238;
+            border: none;
+            padding: 5px;
+            color:white;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            text-size: 10px;
+        }
+        .image
+        {
+            width: 500px;
+            height: 500px;
+           
+           
+        }
+
+        .imagecontainer{
+            align-items: center;
+            text-align:center;
+        }
+
+       
+    </style>
+</head>
+<body>
+
+    <p><a class="nav-link" asp-controller="Home" asp-action="index">Strona Glowna</a> </p>
+    
+    <div class="editconatiner">
+@using (Html.BeginForm("EditNews2", "Home", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+	<form asp-action="UploadFiles" method="post" enctype="multipart/form-data">
+	@Html.ValidationSummary()
+
+                <h1>Edytuj newsa @Model.Title</h1>
+                <button class="button" type="submit">zakoncz edycje</button>
+
+
+                <p class="textarealogin">nazwa newsa: </p>@Html.TextBoxFor(n => n.Title)
+                <p class="textarealogin">tresc newsa: </p>@Html.TextBoxFor(n => n.Content)
+                <p class="textarealogin">categoria newsa:</p>	@Html.TextBoxFor(n => n.Category)
+                <p class="textarealogin"><input type="file" name="files" multiple /></p>
+	            @Html.HiddenFor(n => n.Comments)
+	            @Html.HiddenFor(n => n.Id)
+	</form>
+}
+    </div>
+	@if (Model.Images != null)
+	{
+		@foreach(var image in Model.Images)
+		{
+		    <div class="imagecontainer">
+			@using (Html.BeginForm("DeletePhoto", "Home", FormMethod.Post))
+			{
+				@Html.ValidationSummary()
+				@Html.HiddenFor(n => n.Id)
+				@Html.Hidden("ImageId", image.id)
+                    <button class="button" type="submit">Usun</button>
+                    <p></p>
+                <img class="image"src="@Url.Action("DisplayImage", "Home", new { imageId = image.id })" alt="Obraz" />
+                
+			
+				
+			}
+            </div>
+			<br />
+		}
+	}
+    </body>
+    </html>
+	
+
+
+

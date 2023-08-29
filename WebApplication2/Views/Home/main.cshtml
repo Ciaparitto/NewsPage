@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #37474F;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            height: 50vh;
+            margin: 0;
+            overflow: visible;
+        }
+
+        h1 {
+            color: #2196F3;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .nav-link {
+            color: #E0E0E0;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+            .nav-link:last-child {
+                margin-right: 0;
+            }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .button {
+            background-color: #607D8B;
+            color: white;
+            border: none;
+            padding: 15px 15px;
+            margin-top: 30px;
+            cursor: pointer;
+            text-align: center;
+            font-size:20px;          
+        }
+        .image
+        {
+            width: 300px;
+            height: 150px;
+        }
+       
+    </style>
+    <title>Przykładowa Strona</title>
+</head>
+<body>
+    <div class="nav-links">
+        <a class="nav-link" asp-controller="Home" asp-action="chooseNews">sprawdz newsy</a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a class="nav-link" asp-controller="Account" asp-action="LogOut">wyloguj</a>
+        }
+        else
+        {
+            <a class="nav-link" asp-controller="Account" asp-action="Login">Zaloguj</a>
+            <a class="nav-link" asp-controller="Account" asp-action="Register">Zarejestruj</a>
+        }
+        @if (ViewBag.UserIsAdmin != null && ViewBag.UserIsAdmin)
+        {
+            <a class="nav-link" asp-controller="Home" asp-action="Addnews">Dodaj newsa</a>
+        }
+    </div>
+
+    <h1>Witaj na Stronie!</h1>
+
+    <div class="button-container">
+        @for (int i = 0; i < 3; i++)
+        {
+            @using (Html.BeginForm("chooseNews", "Home", FormMethod.Post))
+            {
+                @if (ViewBag.newslist[i] != null)
+                {
+                    <div class="News">
+
+                        @Html.ValidationSummary()
+                        <button class="button" type="submit" name="selectedNewsId" value="@ViewBag.newslist[i].Id">
+                            
+                            @if (ViewBag.newslist != null && ViewBag.newslist[i] != null && ViewBag.newslist[i].Images != null && ViewBag.newslist[i].Images.Count > 0)
+                            {
+                                @if (ViewBag.newslist[i].Images[0] != null)
+                                {
+                                    <img class="image" src="@Url.Action("DisplayImage", "Home", new { imageId = ViewBag.newslist[i].Images[0].id  })" alt="Obraz" />
+                                }
+                            }
+                            <nav>@ViewBag.newslist[i].Title</nav>
+                        </button>
+                    </div>
+                }
+            }
+        }
+    </div>
+</body>
+</html>

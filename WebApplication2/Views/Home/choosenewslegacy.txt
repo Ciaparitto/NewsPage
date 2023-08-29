@@ -1,0 +1,78 @@
+@model IEnumerable<WebApplication2.Models.News>
+
+@{
+    ViewData["Title"] = "chooseNews";
+    List<UserRead> ReadNewsList;
+    ReadNewsList = ViewBag.ReadNews;
+    List<News> AllNews = new List<News>();
+
+
+}
+@if (ViewBag.UserData != null)
+{
+
+    @foreach (var news in Model)
+    {
+        AllNews.Add(news);
+        @foreach (var news1 in ReadNewsList)
+        {
+            @if (news.Id == news1.NewsId)
+            {
+                AllNews.Remove(news);
+            }
+        }
+    }
+    @if (AllNews.Count > 0)
+    {
+        <h1>nieprzeczytane:</h1>
+    }
+    @foreach (var news in AllNews)
+    {
+        @using (Html.BeginForm("choosenews", "Home", FormMethod.Post))
+        {
+            @Html.ValidationSummary()
+            ;
+            @Html.Hidden("newsId", news.Id)
+            <p>@news.Title<button type="submit" name="selectedNewsId" value="@news.Id">Przejdz do newsa</button></p>
+        }
+    }
+}
+<h1>Lista neswow</h1>
+
+    
+
+@foreach(var news in Model)
+{
+        
+        <table>
+        <tr>
+        <td>
+            @news.Title
+        </td>
+        <td>
+        @using (Html.BeginForm("choosenews", "Home", FormMethod.Post))
+        {
+                @Html.ValidationSummary();
+        
+                @Html.Hidden("newsId", news.Id)
+                <button type="submit" name="selectedNewsId" value="@news.Id">Przejdz do newsa</button>
+        }
+            </td>
+            @if (ViewBag.UserIsAdmin == true)
+            {
+                <td>
+                    @using (Html.BeginForm("deletenews", "Home", FormMethod.Post))
+                    {
+                        <button type="submit" name="Id" value="@news.Id">Usun</button>
+                    }
+                </td>
+                <td>
+                    @using (Html.BeginForm("EditNews", "Home", FormMethod.Post))
+                    {
+                        <button type="submit" name="id" value="@news.Id">Edytuj</button>
+                    }
+                </td>
+            }
+        </tr>
+    </table> 
+}     

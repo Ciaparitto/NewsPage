@@ -1,0 +1,150 @@
+﻿@model IEnumerable<WebApplication2.Models.News>
+
+@{
+    ViewData["Title"] = "chooseNews";
+    List<UserRead> ReadNewsList;
+    ReadNewsList = ViewBag.ReadNews;
+    List<News> AllNews = new List<News>();
+
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #37474F;
+            color: #E0E0E0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            
+        }
+
+        .header {
+            background-color: #37474F;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            color: #E0E0E0;
+        }
+
+        .nav-link {
+            color: #E0E0E0;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .paragraph-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            text-align: center;
+            color:white;
+        }
+
+        .paragraph {
+            background-color: #263238;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 5px;
+            flex: 0 0 calc(33.33% - 20px);
+            color: white;
+            text-decoration:none;
+        }
+
+        .button {
+            background-color: #607D8B;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            
+            text-align:center;
+          
+            
+        }
+
+        .image {
+            width: 500px;
+            height: 250px;
+           
+           
+            align-items:center;
+            
+        }
+        h2{
+            margin: auto;
+            text-align:center;
+        }
+
+        .buttoncontener {
+            display: flex;
+            justify-content: center;
+        }
+
+       
+      
+        </style>
+    <title>Przykładowa Strona</title>
+</head>
+<body>
+    <div class="header">
+        <a class="nav-link" asp-controller="Home" asp-action="index">Strona Glowna</a>
+        <h1>Wszystkie newsy</h1>
+        
+    </div>
+    <div class="paragraph-container">
+        @foreach (var news in Model)
+        {
+            <a class="paragraph" asp-controller="Home" asp-action="currentnews" asp-route-NewsId="@news.Id">
+                <h2>@news.Title</h2>
+                <div class="buttoncontener">
+                @if (ViewBag.UserIsAdmin == true)
+                {
+
+                    @using (Html.BeginForm("deletenews", "Home", FormMethod.Post))
+                    {
+                        <button class="button" type="submit" name="Id" value="@news.Id">Usun</button>
+                    }
+                    @using (Html.BeginForm("EditNews", "Home", FormMethod.Post))
+                    {
+                        <button class="button" type="submit" name="id" value="@news.Id">Edytuj</button>
+                    }
+
+                }
+                </div>
+
+
+                <p>
+                    @if(news.Images != null)
+                    {
+                        <img class="image" src="@Url.Action("DisplayImage", "Home", new { imageId = news.Images[0].id  })" alt="Obraz" />
+                    }
+                </p>
+               
+               
+             
+            </a>
+
+        }
+
+    </div>
+
+
+
+
+    <div class="paragraph-container">
+        <!-- Analogicznie dodaj paragrafy i przyciski dla trzeciego rzędu -->
+    </div>
+</body>
+</html>

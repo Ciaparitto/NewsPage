@@ -1,0 +1,136 @@
+﻿@model WebApplication2.Models.News
+
+
+@{
+    ViewData["Title"] = "currentNews";
+}
+@{
+    ViewData["Title"] = "EditNews";
+    List<Image> Images2 = new List<Image>();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #37474F;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 50vh;
+            margin: 0;
+            overflow: visible;
+            font-family:Cambria;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+            font-size:50px;
+        }
+
+
+        .button {
+            padding: 10px 20px;
+            background-color: #263238;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .textarealogin {
+            background-color: #37474F;
+            padding: 5px 10px;
+            color: white
+        }
+
+        input[type="text"], input[type="password"] {
+            background-color: #263238;
+            border: none;
+            padding: 5px;
+            color: white;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            text-size: 25px;
+        }
+
+        .image {
+            width: 500px;
+            height: 500px;
+            padding:10px;
+        }
+
+        .imagecontainer {
+            align-items: center;
+            text-align: center;
+        }
+        .paragraph{
+            color:white;
+        }
+    </style>
+</head>
+<body>
+    <p><a class="nav-link" asp-controller="Home" asp-action="index">Strona Glowna</a> </p>
+@if (ViewBag.UserIsAdmin != null && ViewBag.UserIsAdmin)
+{
+    @using (Html.BeginForm("EditNews", "Home", FormMethod.Post))
+    {
+        <button class="button" type="submit" name="id" value="@Model.Id">Edytuj</button>
+    }
+}
+    <p class="paragraph">dodano @Model.createdate.Day.@Model.createdate.Month.@Model.createdate.Year</p>
+    <h1>@Model.Title</h1>
+<p></p>
+    <p class="paragraph">@Model.Content</p>
+<p></p>
+@if (Model.Images != null)
+{
+    @foreach (var image in Model.Images)
+    {
+        <img class="image "src="@Url.Action("DisplayImage", "Home", new { imageId = image.id })" alt="Obraz" />
+        
+    }
+}
+<p class="paragraph">komentarze:</p>
+@if (Model.Comments != null)
+{
+
+    @foreach (var comment in ViewBag.Comments)
+    {
+
+            <p class="paragraph">napisal: @comment.creator</p>
+            <p class="paragraph">@comment.CommentText</p>
+
+    }
+
+}
+else
+{
+        <p class ="paragraph"> @Model.Content>Brak komentarzy</p>
+}
+@if(ViewBag.UserData != null)
+{
+@using (Html.BeginForm("AddComment", "Home", FormMethod.Post))
+{
+    @Html.ValidationSummary();
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.Title)
+    @Html.HiddenFor(x => x.Content)
+    @Html.HiddenFor(x => x.Category)
+    @Html.HiddenFor(x => x.Comments)
+            <h2 class="paragraph">dodaj kometarz</h2>
+    <p class="paragraph">tresc kometarza:</p>
+    @Html.TextAreaFor(x => x.newCommentText)
+    <p></p>
+    <input class="button" type="submit" value="Dodaj Komentarz"/>
+}
+}else{
+        <p class="paragraph">Zaloguj sie aby dodac komentarz</p>
+}
+</body>
+</html>

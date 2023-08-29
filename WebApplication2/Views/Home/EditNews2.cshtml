@@ -1,0 +1,17 @@
+﻿@model WebApplication2.Models.News
+@{
+    ViewData["Title"] = "EditNews2";
+}
+
+<p>@Model.Title 123</p>
+@using (Html.BeginForm("EditNews2", "Home", FormMethod.Post))
+{
+	@Html.ValidationSummary();
+	<p>nazwa newsa: </p>@Html.HiddenFor(n => n.Title);
+	<p>tresc newsa: </p>@Html.TextBoxFor(n => n.Content);
+	<p>categoria newsa:</p>	@Html.TextBoxFor(n => n.Category);
+	
+
+	<button type="submit">Potwierdz</button>
+}
+

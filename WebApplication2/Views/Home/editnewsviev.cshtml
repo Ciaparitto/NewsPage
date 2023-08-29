@@ -1,0 +1,29 @@
+﻿@model WebApplication2.Models.News
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit News</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.13/jquery.validate.unobtrusive.min.js"></script>
+</head>
+<body>
+    <h1>Edit News</h1>
+
+    @using (Html.BeginForm("EditNews", "Home", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <form asp-action="UploadFiles" method="post" enctype="multipart/form-data">
+            <p>@Html.LabelFor(x => x.Content)</p>
+            <p>@Html.TextBoxFor(x => x.Content, new { @class = "form-control" })</p>
+            <p><input type="file" id="Images" name="files" multiple /></p>
+            @Html.ValidationMessageFor(x => x.Content, "", new { @class = "text-danger" })
+        </form>
+
+        <button type="submit">Potwierdź</button>
+    }
+</body>
+</html>

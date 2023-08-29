@@ -1,0 +1,83 @@
+﻿@model WebApplication2.Models.News
+@{
+    ViewData["Title"] = "addnews";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #37474F;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 50vh;
+            margin: 0;
+            overflow: visible;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #263238;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .textareaAddnews{
+            background-color: #37474F;
+            padding: 5px 10px;
+            color: white
+        }
+
+        input[type="text"], input[type="password"] {
+            background-color: #263238;
+            border: none;
+            padding: 5px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            text-size: 10px;
+        }
+        .inputfiles{
+            color:white;
+            background-color: background-color: #263238;
+        }
+    </style>
+</head>
+<body>
+    <p><a class="nav-link" asp-controller="Home" asp-action="index">Strona Glowna</a> </p>
+    <h1>Dodaj Newsa!</h1>
+    <div class="addcontainer">
+@using (Html.BeginForm("addnews", "HOME", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <form asp-action="UploadFiles" method="post" enctype="multipart/form-data">
+    @Html.ValidationSummary()
+                <p class="textareaAddnews">podaj tytul newsa: </p>
+                    @Html.TextBoxFor(x => x.Title)
+                <p class="textareaAddnews">podaj kategorie newsa</p>
+                    @Html.TextBoxFor(x => x.Category)
+                <p class="textareaAddnews">podaj tresc newsa</p>
+                    @Html.TextBoxFor(x => x.Content)
+                <p><input class="inputfiles" type="file" name="files" multiple /></p>
+    
+    @Html.HiddenFor(x => x.Images)
+    @Html.HiddenFor(x => x.Comments)
+    @Html.HiddenFor(x => x.newCommentText)
+    <button class="button" type="submit">Potwiedz</button>
+    </form>
+   
+}
+    </div>
+</body>
+</html>
+
